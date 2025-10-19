@@ -1,0 +1,69 @@
+services:
+  # postgres:
+  #   image: postgres:16-alpine
+  #   container_name: dascribs_postgres
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     POSTGRES_DB: ${POSTGRES_DB}
+  #     POSTGRES_USER: ${POSTGRES_USER}
+  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  #     POSTGRES_INITDB_ARGS: "--encoding=UTF8 --lc-collate=C --lc-ctype=C"
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #     - ./backend/init-scripts:/docker-entrypoint-initdb.d
+  #   ports:
+  #     - "${DOCKER_POSTGRES_PORT}:5432"
+  #   networks:
+  #     - dascribs_net
+  #   restart: unless-stopped
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+  #     interval: 30s
+  #     timeout: 10s
+  #     retries: 3
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: dascribs_backend
+    env_file:
+      - .env
+    ports:
+      - "${DOCKER_BACKEND_PORT}:8080"
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    networks:
+      - dascribs_net
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: dascribs_frontend
+    env_file:
+      - .env
+    ports:
+      - "${DOCKER_FRONTEND_PORT:-3000}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+    networks:
+      - dascribs_net
+    restart: unless-stopped
+
+networks:
+  dascribs_net:
+    driver: bridge
+
+# volumes:
+#   postgres_data:
+#     driver: local
