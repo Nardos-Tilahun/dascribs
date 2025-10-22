@@ -1,0 +1,21 @@
+meta {
+  name: GetActiveTenant
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseURL}}/tenants/active?page=0&size=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 0
+  size: 10
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

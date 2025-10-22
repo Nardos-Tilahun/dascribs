@@ -1,0 +1,23 @@
+meta {
+  name: GetAllUsers
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/users?page=0&size=10&sortBy=createdAt&Direction=desc
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 0
+  size: 10
+  sortBy: createdAt
+  Direction: desc
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

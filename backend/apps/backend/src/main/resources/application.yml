@@ -1,0 +1,102 @@
+spring:
+  profile:
+    active: dev
+  application:
+    name: dascribs
+  datasource:
+    url: ${POSTGRES_URL}
+    username: ${POSTGRES_USER}
+    password: ${POSTGRES_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    sql-migration-suffixes: .txt
+    baseline-on-migrate: true
+    baseline-version: 0
+    validate-on-migrate: true
+    clean-disabled: false
+    clean-before-migrate: true
+    out-of-order: false
+    # Mail configuration (only used in production)
+    mail:
+      host: "${SMTP_HOST:smtp.gmail.com}"
+      port: "${SMTP_PORT:587}"
+      username: "${SMTP_USERNAME:}"
+      password: "${SMTP_PASSWORD:}"
+      properties:
+        mail:
+          smtp:
+            auth: true
+            starttls:
+              enable: true
+            connection timeout: 5000
+            timeout: 5000
+            write timeout: 5000
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+app:
+  jwt:
+    secret: "404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970"
+    expiration: 86400000
+    refresh-expiration: 604800000
+  security:
+    cors:
+      allowed-origins: "http://localhost:3000,http://localhost:5173"
+      allowed-methods: "GET,POST,PUT,DELETE,OPTIONS"
+      allowed-headers: "*"
+      allow-credentials: true
+    session:
+      timeout-minutes: 120  # 2 hours
+      max-sessions-per-user: 5
+      cleanup-cron: "0 0 2 * * ?"  # Daily at 2 AM
+  public-endpoints:
+    - "/api/auth/login"
+    - "/api/auth/register"
+    - "/api/auth/forgot-password"
+    - "/api/auth/reset-password"
+    - "/api/public/**"
+    - "/swagger-ui/**"
+    - "/v3/api-docs/**"
+  email:
+    from: "${EMAIL_FROM:noreply@dascribs.com}"
+    support: "${EMAIL_SUPPORT:support@dascribs.com}"
+  frontend:
+    url: "${FRONTEND_URL:http://localhost:3000}"
+
+  # Email service configuration
+  email-service:
+    # For development/test - where to store/view sent emails
+    dev-storage:
+      file-path: "./logs/emails"
+      web-port: 8081
+      web-path: "/dev-emails"
+
+logging:
+  level:
+    com.dascribs: DEBUG
+    org.flywaydb: DEBUG
+    org.springframework.security: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always

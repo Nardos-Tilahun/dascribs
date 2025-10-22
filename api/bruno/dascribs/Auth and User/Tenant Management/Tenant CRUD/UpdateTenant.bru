@@ -1,0 +1,28 @@
+meta {
+  name: UpdateTenant
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{baseURL}}/tenants/:id
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  {
+    "name": "Updated Corp Name",
+    "plan": "ENTERPRISE",
+    "contactEmail": "info@premiumrealty.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,0 +1,16 @@
+meta {
+  name: EmailStatus
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseURL}}/auth/email/status
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

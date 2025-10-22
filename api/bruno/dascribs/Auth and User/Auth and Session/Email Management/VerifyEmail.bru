@@ -1,0 +1,20 @@
+meta {
+  name: VerifyEmail
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseURL}}/auth/email/verify?token=set_token_here
+  body: none
+  auth: inherit
+}
+
+params:query {
+  token: set_token_here
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

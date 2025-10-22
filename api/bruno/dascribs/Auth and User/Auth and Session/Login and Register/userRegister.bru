@@ -1,0 +1,28 @@
+meta {
+  name: userRegister
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/auth/register
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "fullName": "John Agent",
+    "email": "super.agent@dascribs.com",
+    "password": "password123",
+    "phone": "+1234567890",
+    "role": "SUPER_ADMIN",
+    "salary": 50000.00,
+    "commissionRate": 15.0
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

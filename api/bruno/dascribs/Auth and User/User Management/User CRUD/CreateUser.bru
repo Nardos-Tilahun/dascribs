@@ -1,0 +1,26 @@
+meta {
+  name: CreateUser
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseURL}}/users
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "fullName": "Jane Smith",
+    "email": "jane.client@dascribs.com",
+    "password": "password123",
+    "phone": "+1987654321",
+    "role": "CLIENT"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

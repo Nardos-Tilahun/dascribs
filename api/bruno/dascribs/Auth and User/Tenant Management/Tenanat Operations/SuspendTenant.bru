@@ -1,0 +1,20 @@
+meta {
+  name: SuspendTenant
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/tenants/:id/suspend
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

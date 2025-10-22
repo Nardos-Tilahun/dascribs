@@ -1,0 +1,30 @@
+meta {
+  name: CreateTenant
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseURL}}/tenants
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "tenantId": "premium_realty",
+    "name": "Premium Realty Group",
+    "domain": "premium.example.com",
+    "plan": "PREMIUM",
+    "contactEmail": "contact@premiumrealty.com",
+    "contactPhone": "+11234567890",
+    "address": "123 Business Ave, City, State",
+    "maxUsers": 50,
+    "maxProperties": 1000
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

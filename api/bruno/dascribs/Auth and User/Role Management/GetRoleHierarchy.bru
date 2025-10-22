@@ -1,0 +1,15 @@
+meta {
+  name: GetRoleHierarchy
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseURL}}/roles/hierarchy
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

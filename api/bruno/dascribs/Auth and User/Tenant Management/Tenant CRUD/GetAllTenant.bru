@@ -1,0 +1,23 @@
+meta {
+  name: GetAllTenant
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseURL}}/tenants?page=0&size=10&sortBy=createdAt&sortDirection=desc
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 0
+  size: 10
+  sortBy: createdAt
+  sortDirection: desc
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

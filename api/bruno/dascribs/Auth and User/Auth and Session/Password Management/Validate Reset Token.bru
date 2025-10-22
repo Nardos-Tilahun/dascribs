@@ -1,0 +1,20 @@
+meta {
+  name: Validate Reset Token
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseURL}}/auth/validate-reset-token?token=reset_token_here
+  body: none
+  auth: inherit
+}
+
+params:query {
+  token: reset_token_here
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

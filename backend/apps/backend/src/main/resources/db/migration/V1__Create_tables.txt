@@ -1,0 +1,103 @@
+-- Create enum types that match your Java enums
+DO $$ BEGIN
+    CREATE TYPE user_role AS ENUM ('SUPER_ADMIN', 'ADMIN', 'AGENT', 'CLIENT');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+DO $$ BEGIN
+    CREATE TYPE tenant_plan AS ENUM ('FREE', 'PREMIUM', 'ENTERPRISE');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- Create tenants table (matches your Tenant entity)
+CREATE TABLE tenants (
+    id BIGSERIAL PRIMARY KEY,
+    tenant_id VARCHAR(100) UNIQUE NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    domain VARCHAR(255),
+    plan tenant_plan NOT NULL DEFAULT 'FREE',
+    max_users INTEGER DEFAULT 10,
+    max_properties INTEGER DEFAULT 100,
+    subscription_ends_at TIMESTAMP,
+    contact_email VARCHAR(255),
+    contact_phone VARCHAR(50),
+    address TEXT,
+    logo_url TEXT,
+    active BOOLEAN NOT NULL DEFAULT true,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create users table (matches your User entity)
+CREATE TABLE users (
+    id BIGSERIAL PRIMARY KEY,
+    full_name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    phone VARCHAR(50),
+    role user_role NOT NULL,
+    salary NUMERIC(15,2),
+    commission_rate NUMERIC(5,2),
+    profile_image_url TEXT,
+    date_of_birth TIMESTAMP,
+    hire_date TIMESTAMP,
+    address TEXT,
+    emergency_contact_name VARCHAR(255),
+    emergency_contact_phone VARCHAR(50),
+    active BOOLEAN NOT NULL DEFAULT true,
+    email_verified BOOLEAN NOT NULL DEFAULT false,
+    pending_email VARCHAR(255),
+    email_verification_sent_at TIMESTAMP,
+    last_login_at TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create user_tenants table (matches your UserTenant entity)
+CREATE TABLE user_tenants (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    tenant_id BIGINT NOT NULL REFERENCES tenants(id) ON DELETE CASCADE,
+    is_primary BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(user_id, tenant_id)
+);
+
+-- Create user_sessions table (matches your UserSession entity)
+CREATE TABLE user_sessions (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    session_token VARCHAR(500) UNIQUE NOT NULL,
+    ip_address VARCHAR(45),
+    user_agent TEXT,
+    expires_at TIMESTAMP NOT NULL,
+    last_activity_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create email_verification_tokens table (matches your EmailVerificationToken entity)
+
+CREATE TABLE email_verification_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,  -- Store email being verified
+    token_type VARCHAR(50) NOT NULL, -- 'VERIFICATION', 'CHANGE_EMAIL'
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Create password_reset_tokens table (matches your PasswordResetToken entity)
+CREATE TABLE password_reset_tokens (
+    id BIGSERIAL PRIMARY KEY,
+    user_id BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    token VARCHAR(255) UNIQUE NOT NULL,
+    expires_at TIMESTAMP NOT NULL,
+    used BOOLEAN NOT NULL DEFAULT false,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

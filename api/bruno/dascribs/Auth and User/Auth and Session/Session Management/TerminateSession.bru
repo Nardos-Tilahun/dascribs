@@ -1,0 +1,20 @@
+meta {
+  name: TerminateSession
+  type: http
+  seq: 2
+}
+
+delete {
+  url: {{baseURL}}/auth/sessions/:id
+  body: none
+  auth: inherit
+}
+
+params:path {
+  id: 1
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

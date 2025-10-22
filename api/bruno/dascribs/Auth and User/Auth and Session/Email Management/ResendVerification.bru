@@ -1,0 +1,16 @@
+meta {
+  name: ResendVerification
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseURL}}/auth/email/resend-verification
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

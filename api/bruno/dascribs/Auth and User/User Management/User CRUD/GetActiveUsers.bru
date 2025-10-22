@@ -1,0 +1,21 @@
+meta {
+  name: GetActiveUsers
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseURL}}/users/active?page=0&seize=10
+  body: none
+  auth: inherit
+}
+
+params:query {
+  page: 0
+  seize: 10
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

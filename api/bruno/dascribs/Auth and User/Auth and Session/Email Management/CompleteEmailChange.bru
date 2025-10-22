@@ -1,0 +1,20 @@
+meta {
+  name: CompleteEmailChange
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{baseURL}}/auth/emai/change/confirm?token=email_change_token
+  body: none
+  auth: inherit
+}
+
+params:query {
+  token: email_change_token
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

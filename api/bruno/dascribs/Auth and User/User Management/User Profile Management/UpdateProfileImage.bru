@@ -1,0 +1,26 @@
+meta {
+  name: UpdateProfileImage
+  type: http
+  seq: 2
+}
+
+put {
+  url: {{baseURL}}/users/:id/profile-image
+  body: json
+  auth: inherit
+}
+
+params:path {
+  id: 
+}
+
+body:json {
+  {
+    "imageUrl": "https://example.com/profile.jpg"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

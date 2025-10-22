@@ -1,0 +1,16 @@
+meta {
+  name: ServiceInfo
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseURL}}/public/info
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

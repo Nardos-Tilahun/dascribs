@@ -1,0 +1,22 @@
+meta {
+  name: ChangeEmail
+  type: http
+  seq: 4
+}
+
+post {
+  url: {{baseURL}}/auth/email/change
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "newEmail": "newemail@example.com"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

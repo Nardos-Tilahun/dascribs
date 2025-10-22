@@ -1,0 +1,20 @@
+meta {
+  name: GetTenantByName
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseURL}}/tenants/:tenant_id/default_tenant
+  body: none
+  auth: inherit
+}
+
+params:path {
+  tenant_id: 
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

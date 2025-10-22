@@ -1,0 +1,20 @@
+meta {
+  name: ResetTokenInfo
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseURL}}/auth/reset-password/user-info?token=reset_token_here
+  body: none
+  auth: inherit
+}
+
+params:query {
+  token: reset_token_here
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
